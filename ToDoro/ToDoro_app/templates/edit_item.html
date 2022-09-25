@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <!-- Edit ToDoro Item Component -->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <div class="card border-dark bg-light my-3" >
+          <div class="card-header bg-transparent ">
+            <form method="POST">
+            {% csrf_token %}
+              {{ form.as_p }}      
+    
+              <input class="btn btn-success btn-sm" type="submit" value="Edit Item">
+          	</form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+  <!-- End of Edit ToDoro Item Component -->
+
+{% endblock %}

@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath ToDoro ToDoro_project.wsgi

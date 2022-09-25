@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  
+  <!-- Messages Component -->
+  <div class="container mt-2">
+  {% if messages %}
+    {% for message in messages %}
+      <article class="alert alert-success" role="alert">
+        <div class="message-body">
+            {{ message }}
+        </div>
+      </article>
+    {% endfor %}
+  {% endif %}
+  </div>
+    <!-- End of Messages Component -->
+
+  <!-- Create new ToDoro List Component -->
+  <div class="container mt-2">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card border-dark bg-light my-2" >
+          <div class="card-header bg-transparent ">
+            <h5>Create a new ToDoro list: </h5>
+            <form method="POST">
+              {% csrf_token %}
+              {{ form_list.as_p }}
+              <input class="btn btn-primary btn-sm" type="submit" value="Add Title">
+            </form>
+          </div>
+        </div>
+      </div>
+            
+      <div class="col-md-6">
+        <div class="card border-dark bg-light my-2" >
+          <div class="card-header bg-transparent ">
+            <h5> Add item to ToDoro list: </h5>
+            <form method="POST">
+              {% csrf_token %}
+                {{ form_item.as_p }}
+              <input class="btn btn-primary btn-sm" type="submit" value="Add Item">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of Create new ToDoro List Component -->
+
+  <hr>
+
+  <!-- Display ToDoro List Component -->
+  <div class="container">
+    <div class="row">
+      {% for title in titles %}
+      <div class="col-md-6">
+        <div class="card border-dark bg-light my-2" >
+          <div class="card-header bg-transparent ">
+              <a href="{% url 'edit_title' title.id %}" class="mx-3"><i class="far fa-edit fa-sm"></i></a>
+              <strong>{{ title }}</strong>
+          </div>
+
+          <div class="card-body">
+            <div class="card">
+              <table class="table table-striped">
+                <tbody>
+                {% for item in title.todoitem_set.all %}
+                  <tr>
+                    <td>
+                        <a href="{% url 'edit_item' item.id %}"><i class="far fa-edit fa-sm"></i></a> 
+                        <a href="{% url 'delete_item' item.id %}"><i class="far fa-trash-alt fa-sm"></i></a>
+                    </td>
+                    
+                    <td>
+                      {% if item.completed == True %}
+                        <span style="text-decoration: line-through;">{{ item }}</span>
+                      {% else %}
+                        {{ item }}
+                      {% endif %}
+                    </td>
+
+                    <td>
+                      {% if item.completed == True %}
+                        <a href="{% url 'done' item.id %}"><i class="far fa-check-circle fa-sm"></i></a>
+                      {% else %}
+                        <a href="{% url 'incomplete' item.id%}"><i class="far fa-circle fa-sm"></i></a>
+                      {% endif %}
+                    </td>
+
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-3">
+              <a href="{% url 'delete_list' title.id %}">
+                <input class="btn btn-danger btn-sm" type="submit" value="Delete List">
+              </a>
+            </div>        
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+   </div> 
+  <!-- End of Display ToDoro List Component -->
+
+{% endblock %}
